@@ -11,3 +11,29 @@ a {
   text-decoration: none;
   color: #757ce8;
 }
+.default-layout {
+  display: grid;
+  grid-template-rows: 80px auto 3rem;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+}
+
+header {
+  grid-area: header;
+}
+main {
+  grid-area: main;
+  min-height: 90vh;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #3f51b5;
+  padding: 1rem;
+  color: white;
+}
+.copy-right {
+  height: 100%;
+}

@@ -1,11 +1,14 @@
 import './App.css';
+import DefaultLayout from './layout/DefaultLayout';
 import EntryPage from './pages/entry/EntryPage';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <EntryPage />
-    </div>
+    <Router className="App">
+      {/* <EntryPage /> */}
+      <DefaultLayout>// dashboard</DefaultLayout>
+    </Router>
   );
 }
 
