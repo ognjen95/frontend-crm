@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import './table.style.css';
 import Table from '@material-ui/core/Table';
@@ -25,68 +25,11 @@ const tableHeaders = [
   'Poruke',
 ];
 
-function createData(
-  id,
-  status,
-  drzava,
-  oblast,
-  naslov,
-  prodavac,
-  datum,
-  posiljalac,
-  poruke
-) {
-  return {
-    id,
-    status,
-    drzava,
-    oblast,
-    naslov,
-    prodavac,
-    datum,
-    posiljalac,
-    poruke,
-  };
-}
-
-const rows = [
-  createData(
-    '12425',
-    'Zatvoren',
-    'BIH',
-    'Servis',
-    'Spare parts',
-    'TCB',
-    ' 25.12.2015  16:04',
-    'Live chat',
-    4
-  ),
-  createData(
-    '12545',
-    'Zatvoren',
-    'BIH',
-    'Servis',
-    'Spare parts',
-    'TCB',
-    ' 25.12.2015  16:04',
-    'Live chat',
-    4
-  ),
-  createData(
-    '12645',
-    'Zatvoren',
-    'BIH',
-    'Servis',
-    'Spare parts',
-    'TCB',
-    ' 25.12.2015  16:04',
-    'Live chat',
-    4
-  ),
-];
-
-export default function BasicTable() {
+export default function BasicTable({ tickets }) {
   const classes = useStyles();
+  useEffect(() => {
+    console.log(tickets);
+  }, [tickets]);
 
   return (
     <TableContainer component={Paper}>
@@ -100,21 +43,28 @@ export default function BasicTable() {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {!rows.length ? (
-            <h2>No Tickets</h2>
+        <TableBody className="center">
+          {!tickets.length ? (
+            <TableRow
+              style={{
+                position: 'absolute',
+              }}
+              className="tableRow"
+            >
+              <TableCell>Nema tiketa sa ovim ID brojem</TableCell>
+            </TableRow>
           ) : (
-            rows.map((row) => (
-              <TableRow className="tableRow" key={row.id}>
+            tickets.map((row, idx) => (
+              <TableRow className="tableRow" key={idx}>
                 <TableCell scope="row">{row.id}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
-                <TableCell align="right">{row.drzava}</TableCell>
-                <TableCell align="right">{row.oblast}</TableCell>
-                <TableCell align="right">{row.naslov}</TableCell>
-                <TableCell align="right">{row.prodavac}</TableCell>
-                <TableCell align="right">{row.datum}</TableCell>
-                <TableCell align="right">{row.posiljalac}</TableCell>
-                <TableCell align="right">{row.poruke}</TableCell>
+                <TableCell align="left">{row.status}</TableCell>
+                <TableCell align="left">{row.drzava}</TableCell>
+                <TableCell align="left">{row.oblast}</TableCell>
+                <TableCell align="left">{row.naslov}</TableCell>
+                <TableCell align="left">{row.prodavac}</TableCell>
+                <TableCell align="left">{row.datum}</TableCell>
+                <TableCell align="left">{row.posiljalac}</TableCell>
+                <TableCell align="left">{row.poruke}</TableCell>
               </TableRow>
             ))
           )}
