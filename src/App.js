@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Dashboard from './pages/dashboard/Dashboard';
 import NewTicketPage from './pages/new-ticekt/NewTicketPage';
 import TicketList from './pages/ticket-listing/TicketList';
+import Ticket from './pages/ticket/Ticket';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <DefaultLayout>
         {/* <Dashboard /> */}
         {/* <NewTicketPage /> */}
-        <TicketList />
+        {/* <TicketList /> */}
+        <Ticket />
       </DefaultLayout>
     </Router>
   );

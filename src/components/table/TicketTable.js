@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import nodata from '../../imgs/nodata.svg';
 const useStyles = makeStyles({
   table: { minWidth: 650 },
 });
@@ -47,24 +47,38 @@ export default function BasicTable({ tickets }) {
           {!tickets.length ? (
             <TableRow
               style={{
-                position: 'absolute',
+                position: 'relative',
+                marginTop: '20px',
               }}
               className="tableRow"
             >
-              <TableCell>Nema tiketa sa ovim ID brojem</TableCell>
+              <TableCell
+                style={{
+                  width: '200px',
+                  position: 'absolute',
+                  left: '40%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <img style={{ width: '200px' }} src={nodata} alt="" />
+                <h4>Nepostojeci tiket</h4>
+              </TableCell>
             </TableRow>
           ) : (
-            tickets.map((row, idx) => (
+            tickets.map((ticket, idx) => (
               <TableRow className="tableRow" key={idx}>
-                <TableCell scope="row">{row.id}</TableCell>
-                <TableCell align="left">{row.status}</TableCell>
-                <TableCell align="left">{row.drzava}</TableCell>
-                <TableCell align="left">{row.oblast}</TableCell>
-                <TableCell align="left">{row.naslov}</TableCell>
-                <TableCell align="left">{row.prodavac}</TableCell>
-                <TableCell align="left">{row.datum}</TableCell>
-                <TableCell align="left">{row.posiljalac}</TableCell>
-                <TableCell align="left">{row.poruke}</TableCell>
+                <TableCell scope="row">{ticket.id}</TableCell>
+                <TableCell align="left">{ticket.status}</TableCell>
+                <TableCell align="left">{ticket.drzava}</TableCell>
+                <TableCell align="left">{ticket.oblast}</TableCell>
+                <TableCell align="left">{ticket.naslov}</TableCell>
+                <TableCell align="left">{ticket.prodavac}</TableCell>
+                <TableCell align="left">{ticket.datum}</TableCell>
+                <TableCell align="left">{ticket.posiljalac}</TableCell>
+                <TableCell align="left">{ticket.poruke}</TableCell>
               </TableRow>
             ))
           )}

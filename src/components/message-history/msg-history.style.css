@@ -1,0 +1,38 @@
+.ticketDetailsContainer {
+  width: 100%;
+  padding: 2rem;
+  margin: auto;
+}
+
+.msg-history-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.reverse {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+.msg-sender {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  width: 10%;
+}
+.msg-message {
+  /* border: 1px solid gray; */
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  max-width: 90%;
+}

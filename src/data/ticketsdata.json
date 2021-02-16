@@ -1,14 +1,49 @@
 [
   {
     "id": 156457,
-    "status": "otvoren",
+    "status": "Otvoren",
     "drzava": "Srbija",
     "oblast": "Servis",
     "naslov": "Servis",
     "prodavac": "TCB",
     "datum": "25.12.2015  16:04",
     "posiljalac": "Live chat",
-    "poruke": 4
+    "za": [
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com"
+    ],
+    "cc": ["test@gmail.com", "test@gmail.com"],
+
+    "poruke": 4,
+    "history": [
+      {
+        "date": "20-12-2020",
+        "message": "This is Test Message. This is Test Message. This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. ",
+        "messageBy": "Client"
+      },
+      {
+        "date": "20-12-2020",
+        "message": "DOPUNA PRVE PORUKE This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. This is Test Message.This is Test Message. ",
+        "messageBy": "Client"
+      },
+      {
+        "date": "20-12-2020",
+        "message": "This is Test Message. This is Test Message. This is Test Message. ",
+        "messageBy": "Operator"
+      },
+      {
+        "date": "20-12-2020",
+        "message": "This is Test Message. This is Test Message. This is Test Message. ",
+        "messageBy": "Client"
+      },
+      {
+        "date": "20-12-2020",
+        "message": "This is Test Message. This is Test Message. This is Test Message. ",
+        "messageBy": "Operator"
+      }
+    ]
   },
   {
     "id": 14,
