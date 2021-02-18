@@ -22,10 +22,9 @@ const headersData = [
     label: 'Tickets',
     href: '/tickets',
   },
-
   {
     label: 'Logout',
-    href: '/login',
+    href: '/',
   },
 ];
 
@@ -148,7 +147,7 @@ export default function Header() {
   };
 
   const femmecubatorLogo = (
-    <RouterLink to="/">
+    <RouterLink to="/dashboard">
       <Typography variant="h6" component="h1" className={logo}>
         CRM Ticketing
       </Typography>

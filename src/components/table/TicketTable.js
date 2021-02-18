@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import nodata from '../../imgs/nodata.svg';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles({
   table: { minWidth: 650 },
 });
@@ -70,7 +71,9 @@ export default function BasicTable({ tickets }) {
           ) : (
             tickets.map((ticket, idx) => (
               <TableRow className="tableRow" key={idx}>
-                <TableCell scope="row">{ticket.id}</TableCell>
+                <TableCell scope="row">
+                  <Link to={`/ticket/${ticket.id}`}>{ticket.id}</Link>
+                </TableCell>
                 <TableCell align="left">{ticket.status}</TableCell>
                 <TableCell align="left">{ticket.drzava}</TableCell>
                 <TableCell align="left">{ticket.oblast}</TableCell>

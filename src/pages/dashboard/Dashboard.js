@@ -3,6 +3,7 @@ import { Container, Grid, Button } from '@material-ui/core';
 import TicketTable from '../../components/table/TicketTable';
 import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import ticketsdata from '../../data/ticketsdata.json';
+import { Link } from 'react-router-dom';
 
 const Dashboard = ({ currentPage }) => {
   const tickets = ticketsdata;
@@ -12,16 +13,18 @@ const Dashboard = ({ currentPage }) => {
       <Grid container>
         <Grid container alignItems="center" justify="center">
           <Grid item>
-            <Button
-              className="btn"
-              type="submit"
-              variant="contained"
-              size="large"
-              color="primary"
-              style={{ fontSize: '2rem' }}
-            >
-              + Add new ticket
-            </Button>
+            <Link to="/new-ticket">
+              <Button
+                className="btn"
+                type="submit"
+                variant="contained"
+                size="large"
+                color="primary"
+                style={{ fontSize: '1.2rem' }}
+              >
+                + Add new ticket
+              </Button>
+            </Link>
           </Grid>
         </Grid>
 

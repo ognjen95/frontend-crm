@@ -45,7 +45,7 @@ const EntryPage = () => {
   };
   return (
     <div className="entery-page ">
-      <Paper className="login-paper" elevation={3}>
+      <Paper className="login-paper" elevation={12}>
         <Container>
           {formLoad === 'login' && (
             <LoginComponent

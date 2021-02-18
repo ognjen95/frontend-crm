@@ -54,7 +54,14 @@
     "prodavac": "TCB",
     "datum": "25.12.2015  16:04",
     "posiljalac": "Live chat",
-    "poruke": 4
+    "poruke": 4,
+    "za": [
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com"
+    ],
+    "cc": ["test@gmail.com", "test@gmail.com"]
   },
   {
     "id": 43241,
@@ -65,7 +72,14 @@
     "prodavac": "TCB",
     "datum": "25.12.2015  16:04",
     "posiljalac": "Live chat",
-    "poruke": 4
+    "poruke": 4,
+    "za": [
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com"
+    ],
+    "cc": ["test@gmail.com", "test@gmail.com"]
   },
   {
     "id": 149,
@@ -76,6 +90,13 @@
     "prodavac": "TCB",
     "datum": "25.12.2015  16:04",
     "posiljalac": "Live chat",
-    "poruke": 4
+    "poruke": 4,
+    "za": [
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com",
+      "test@gmail.com"
+    ],
+    "cc": ["test@gmail.com", "test@gmail.com"]
   }
 ]

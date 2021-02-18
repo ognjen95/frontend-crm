@@ -1,10 +1,30 @@
-import React from 'react';
-import { Container, Grid, Button, Paper } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Container, Grid, Button, Paper, TextField } from '@material-ui/core';
 import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import MessageHistory from '../../components/message-history/MessageHistory';
 import ticketsdata from '../../data/ticketsdata.json';
-const Ticket = () => {
-  const ticket = ticketsdata[0];
+import SendIcon from '@material-ui/icons/Send';
+
+const Ticket = ({ match }) => {
+  const [reply, setReply] = useState('');
+  const [ticket, setTicket] = useState('');
+
+  const onChangeHandler = (e) => {
+    const { value } = e.target;
+    setReply(value);
+  };
+
+  useEffect(() => {
+    for (let i = 0; i < ticketsdata.length; i++) {
+      const ticketData = ticketsdata[i];
+
+      if (ticketData.id == match.params.id) {
+        setTicket(ticketData);
+        continue;
+      }
+    }
+    console.log(ticket);
+  }, [ticket, reply]);
   return (
     <Container>
       <Grid container>
@@ -18,10 +38,9 @@ const Ticket = () => {
             style={{ marginBottom: '2rem' }}
             type="submit"
             variant="outlined"
-            size=""
             color="secondary"
           >
-            Close ticket
+            Zatvori tiket
           </Button>
         </Grid>
       </Grid>
@@ -29,29 +48,47 @@ const Ticket = () => {
         <Container>
           <Grid direction="row" justify="space-around" container>
             <Grid xs={12} sm={4} item>
-              <div>Ticket id: {ticket.id}</div>
-              <div>Ticket opened: {ticket.datum}</div>
-              <div>Ticket status: {ticket.status} </div>
-              <div>Ticket subject: {ticket.oblast} </div>
-            </Grid>
-            <Grid xs={12} sm={4} item>
-              <div>Ime i prezime: Petar P.</div>
-              <div>VIN: JKFHS9088FDJ</div>
-              <div>Email: test@gmail.com</div>
-              <div>Tel: 065598111</div>
-            </Grid>
-            <Grid xs={12} sm={4} item>
               <div>
-                Za:{' '}
-                {ticket.za.map((t) => (
-                  <span key={t}> {`${t};`} </span>
-                ))}
+                <strong>Ticket id: </strong> {ticket.id}
               </div>
               <div>
-                CC:{' '}
-                {ticket.cc.map((t) => (
-                  <span key={t}> {`${t};`} </span>
-                ))}
+                <strong>Ticket opened: </strong> {ticket.datum}
+              </div>
+              <div>
+                <strong>Ticket status: </strong>
+                {ticket.status}{' '}
+              </div>
+              <div>
+                <strong>Ticket subject: </strong>
+                {ticket.oblast}{' '}
+              </div>
+            </Grid>
+            <Grid xs={12} sm={4} item>
+              <div>
+                <strong>Ime i prezime: </strong> Petar P.
+              </div>
+              <div>
+                <strong>VIN: </strong> JKFHS9088FDJ
+              </div>
+              <div>
+                <strong>Email: </strong>test@gmail.com
+              </div>
+              <div>
+                <strong>Tel: </strong> 065598111
+              </div>
+            </Grid>
+            <Grid xs={12} sm={4} item>
+              <div>
+                <strong>Za: </strong>
+                {ticket
+                  ? ticket.za.map((t, i) => <span key={i}> {`${t};`} </span>)
+                  : null}
+              </div>
+              <div>
+                <strong>CC: </strong>
+                {ticket
+                  ? ticket.cc.map((t, i) => <span key={i}> {`${t};`} </span>)
+                  : null}
               </div>
             </Grid>
           </Grid>
@@ -59,14 +96,54 @@ const Ticket = () => {
       </Paper>
       <Grid container justify="center" alignItems="center">
         <Grid item>
-          <h2>Poruke</h2>
+          <h1 style={{ margin: '3rem 0', opacity: '.4' }}>Poruke</h1>
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid
+        container
+        className="msg-history-container-box"
+        style={{ maxHeight: '100vh', overflowY: 'auto', padding: '1rem' }}
+        direction="column"
+        justify="flex-start"
+      >
         <Grid xs={12} item>
-          <MessageHistory msgHistory={ticket.history} />
+          {ticket.history ? (
+            <MessageHistory msgHistory={ticket.history} />
+          ) : null}
         </Grid>
       </Grid>
+      <form>
+        <Grid style={{ margin: '2rem 0 1rem 0' }} container>
+          <Grid xs={12} item>
+            <TextField
+              fullWidth={true}
+              id="outlined-textarea"
+              label="Odgovori"
+              placeholder="Upišite Vasu poruku ovde"
+              rows={6}
+              multiline
+              variant="outlined"
+              name="reply"
+              value={reply}
+              onChange={onChangeHandler}
+            />
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid xs={12} item>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              style={{ fontSize: '1.2rem', float: 'right' }}
+              endIcon={<SendIcon fontSize="large" />}
+            >
+              Posalji odgovor
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </Container>
   );
 };

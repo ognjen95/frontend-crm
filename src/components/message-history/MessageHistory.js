@@ -6,30 +6,26 @@ const MessageHistory = ({ msgHistory }) => {
     msg.messageBy === 'Client' ? (
       <div key={index} className="msg-history-container">
         <div className="msg-sender">
-          <div item className="sender">
-            {msg.messageBy}
-          </div>
-          <div item className="date">
-            {msg.date}
-          </div>
+          <div className="sender"> C </div>
         </div>
         <Paper elevation={6} className="msg-message">
-          {msg.message}
+          <Container>
+            <p>{msg.message}</p>
+            <div className="msg-date">{msg.date}</div>
+          </Container>
         </Paper>
       </div>
     ) : (
       //ako poruku ne salje klijent okreni raspored u drugu stranu i promjeni boju
       <div key={index} className="msg-history-container reverse">
-        <div className="msg-sender">
-          <div item className="sender">
-            {msg.messageBy}
-          </div>
-          <div item className="date">
-            {msg.date}
-          </div>
+        <div className="msg-sender msg-sender-reverse">
+          <div className="sender">O</div>
         </div>
-        <Paper elevation={6} className="msg-message">
-          {msg.message}
+        <Paper elevation={6} className="msg-message reverse-color">
+          <Container>
+            <p>{msg.message}</p>
+            <div className="msg-date">{msg.date}</div>
+          </Container>
         </Paper>
       </div>
     )

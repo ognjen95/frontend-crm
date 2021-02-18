@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import SearchForm from '../../components/search-form/SearchForm';
 import TicketTable from '../../components/table/TicketTable';
 import ticketsdata from '../../data/ticketsdata.json';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles({
   table: { minWidth: 650 },
 });
@@ -43,19 +44,21 @@ export default function TicketList() {
       </Grid>
       <Grid
         style={{ margin: '1rem 0' }}
-        justify="space-evenly"
+        justify="space-between"
         alignItems="center"
         container
       >
         <Grid item>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            color="primary"
-          >
-            + Add new ticket
-          </Button>
+          <Link to="/new-ticket">
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              color="primary"
+            >
+              + Add new ticket
+            </Button>
+          </Link>
         </Grid>
 
         <Grid item>

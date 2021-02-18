@@ -14,7 +14,7 @@ const ResetPassword = ({
           <h1>Reset Password</h1>
           <br />
         </Grid>
-        <Grid item>
+        <Grid xs={12} item>
           <form onSubmit={onSubmitResetHandler} className="login-form center">
             <TextField
               required={true}

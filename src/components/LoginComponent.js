@@ -15,7 +15,7 @@ const LoginComponent = ({
           <h1>Login</h1>
           <br />
         </Grid>
-        <Grid item>
+        <Grid xs={12} item>
           <form onSubmit={onSubmitHandler} className="login-form center">
             <TextField
               required={true}
