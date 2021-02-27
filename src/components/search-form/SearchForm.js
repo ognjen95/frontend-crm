@@ -2,11 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
+import { useDispatch } from 'react-redux';
+import { fetchSearchTickets } from '../../pages/ticket-listing/ticketListingAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +23,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchForm({ str, onChangeHandler }) {
+export default function SearchForm() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const onChangeHandler = (e) => {
+    const { value } = e.target;
+
+    dispatch(fetchSearchTickets(value));
+  };
 
   return (
     <Paper component="form" className={classes.root}>
@@ -33,7 +38,6 @@ export default function SearchForm({ str, onChangeHandler }) {
         className={classes.input}
         placeholder="Pretrazi tikete po ID broju"
         inputProps={{ 'aria-label': 'pretrazi tikete' }}
-        value={str}
         onChange={onChangeHandler}
       />
       <IconButton

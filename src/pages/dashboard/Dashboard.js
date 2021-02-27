@@ -46,7 +46,7 @@ const Dashboard = ({ currentPage }) => {
             style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}
             item
           >
-            <TicketTable tickets={tickets} />
+            <TicketTable />
           </Grid>
         </Grid>
       </Grid>

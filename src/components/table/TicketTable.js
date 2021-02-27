@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import nodata from '../../imgs/nodata.svg';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 const useStyles = makeStyles({
   table: { minWidth: 650 },
 });
@@ -19,19 +21,22 @@ const tableHeaders = [
   'Status',
   'Drzava',
   'Oblast',
-  'Naslov',
   'Prodavac',
   'Datum',
-  'Posiljalac',
   'Poruke',
 ];
 
-export default function BasicTable({ tickets }) {
+export default function BasicTable() {
   const classes = useStyles();
-  useEffect(() => {
-    console.log(tickets);
-  }, [tickets]);
 
+  const { searchTicketList, tickets, isLoading, error } = useSelector(
+    (state) => state.ticketsListing
+  );
+
+  useEffect(() => {}, [tickets]);
+
+  if (isLoading) return <h3>Loading</h3>;
+  if (error) return <h3>{error}</h3>;
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -69,19 +74,17 @@ export default function BasicTable({ tickets }) {
               </TableCell>
             </TableRow>
           ) : (
-            tickets.map((ticket, idx) => (
+            searchTicketList.map((ticket, idx) => (
               <TableRow className="tableRow" key={idx}>
                 <TableCell scope="row">
-                  <Link to={`/ticket/${ticket.id}`}>{ticket.id}</Link>
+                  <Link to={`/ticket/${ticket._id}`}>{ticket._id}</Link>
                 </TableCell>
                 <TableCell align="left">{ticket.status}</TableCell>
                 <TableCell align="left">{ticket.drzava}</TableCell>
-                <TableCell align="left">{ticket.oblast}</TableCell>
-                <TableCell align="left">{ticket.naslov}</TableCell>
+                <TableCell align="left">{ticket.oblasti}</TableCell>
                 <TableCell align="left">{ticket.prodavac}</TableCell>
-                <TableCell align="left">{ticket.datum}</TableCell>
-                <TableCell align="left">{ticket.posiljalac}</TableCell>
-                <TableCell align="left">{ticket.poruke}</TableCell>
+                <TableCell align="left">{ticket.openAt}</TableCell>
+                <TableCell align="left">{ticket.conversation.length}</TableCell>
               </TableRow>
             ))
           )}

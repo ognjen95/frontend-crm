@@ -9,7 +9,7 @@ const ResetPassword = ({
 }) => {
   return (
     <Container>
-      <Grid className="center" container>
+      <Grid className="center" direction="column" container>
         <Grid item>
           <h1>Reset Password</h1>
           <br />

@@ -12,7 +12,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
 const headersData = [
   {
     label: 'Dashboard',
@@ -22,10 +22,10 @@ const headersData = [
     label: 'Tickets',
     href: '/tickets',
   },
-  {
-    label: 'Logout',
-    href: '/',
-  },
+  // {
+  //   label: 'Logout',
+  //   href: '/',
+  // },
 ];
 
 const useStyles = makeStyles(() => ({
@@ -71,6 +71,10 @@ export default function Header() {
     drawerOpen: false,
   });
 
+  const history = useHistory();
+  const logOutHandler = () => {
+    history.push('/');
+  };
   const { mobileView, drawerOpen } = state;
 
   useEffect(() => {
@@ -89,7 +93,19 @@ export default function Header() {
     return (
       <Toolbar className={toolbar}>
         {femmecubatorLogo}
-        <div>{getMenuButtons()}</div>
+        <div>
+          {getMenuButtons()}
+          <Button
+            onClick={logOutHandler}
+            {...{
+              color: 'inherit',
+
+              className: menuButton,
+            }}
+          >
+            Logout
+          </Button>
+        </div>
       </Toolbar>
     );
   };
@@ -122,7 +138,12 @@ export default function Header() {
             onClose: handleDrawerClose,
           }}
         >
-          <div className={drawerContainer}>{getDrawerChoices()}</div>
+          <div className={drawerContainer}>
+            {getDrawerChoices()}
+            <MenuItem key={'logout'} onClick={logOutHandler}>
+              Logout
+            </MenuItem>
+          </div>
         </Drawer>
       </Toolbar>
     );
@@ -140,7 +161,7 @@ export default function Header() {
             key: label,
           }}
         >
-          <MenuItem>{label}</MenuItem>
+          <MenuItem key={'logout'}>{label}</MenuItem>
         </Link>
       );
     });
