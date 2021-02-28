@@ -5,12 +5,15 @@ import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import SearchForm from '../../components/search-form/SearchForm';
 import TicketTable from '../../components/table/TicketTable';
 import { Link } from 'react-router-dom';
-
-import { useDispatch } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllTickets } from './ticketListingAction';
 
 export default function TicketList() {
   const dispatch = useDispatch();
+
+  const { isLoading, error } = useSelector((state) => state.ticketsListing);
 
   useEffect(() => {
     dispatch(fetchAllTickets());
@@ -51,6 +54,8 @@ export default function TicketList() {
           style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}
           item
         >
+          {isLoading && <CircularProgress />}
+          {error && <Alert severity="error">{error}</Alert>}
           <TicketTable />
         </Grid>
       </Grid>

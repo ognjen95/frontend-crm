@@ -72,7 +72,10 @@ export default function Header() {
   });
 
   const history = useHistory();
+
   const logOutHandler = () => {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     history.push('/');
   };
   const { mobileView, drawerOpen } = state;

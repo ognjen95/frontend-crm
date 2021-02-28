@@ -2,29 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Button, Paper, TextField } from '@material-ui/core';
 import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import MessageHistory from '../../components/message-history/MessageHistory';
-import ticketsdata from '../../data/ticketsdata.json';
 import SendIcon from '@material-ui/icons/Send';
+import { getTicket, sendTicket, closeTicket } from './ticketAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import { ticketSendingReset } from './ticketSlice';
 
 const Ticket = ({ match }) => {
+  const dispatch = useDispatch();
+  const {
+    ticket,
+    isLoading,
+    error,
+    ticketSendIsLoading,
+    ticketSent,
+  } = useSelector((state) => state.ticket);
+
   const [reply, setReply] = useState('');
-  const [ticket, setTicket] = useState('');
 
   const onChangeHandler = (e) => {
     const { value } = e.target;
     setReply(value);
   };
-
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    dispatch(sendTicket({ id: match.params.id, message: reply }));
+  };
   useEffect(() => {
-    for (let i = 0; i < ticketsdata.length; i++) {
-      const ticketData = ticketsdata[i];
-
-      if (ticketData.id == match.params.id) {
-        setTicket(ticketData);
-        continue;
-      }
-    }
-    console.log(ticket);
-  }, [ticket, reply]);
+    dispatch(getTicket(match.params.id));
+    dispatch(ticketSendingReset());
+    setReply('');
+  }, [dispatch, ticketSent]);
   return (
     <Container>
       <Grid container>
@@ -35,6 +44,9 @@ const Ticket = ({ match }) => {
       <Grid justify="flex-end" container>
         <Grid item>
           <Button
+            onClick={() => {
+              dispatch(closeTicket({ id: match.params.id }));
+            }}
             style={{ marginBottom: '2rem' }}
             type="submit"
             variant="outlined"
@@ -47,48 +59,64 @@ const Ticket = ({ match }) => {
       <Paper className="ticketDetailsContainer">
         <Container>
           <Grid direction="row" justify="space-around" container>
-            <Grid xs={12} sm={4} item>
+            <Grid xs={12} md={4} item>
               <div>
-                <strong>Ticket id: </strong> {ticket.id}
+                <strong>Ticket id: </strong> {ticket._id}
               </div>
               <div>
-                <strong>Ticket opened: </strong> {ticket.datum}
+                <strong>Vreme otvaranja : </strong> {ticket.openAt}
               </div>
               <div>
                 <strong>Ticket status: </strong>
                 {ticket.status}{' '}
               </div>
               <div>
-                <strong>Ticket subject: </strong>
-                {ticket.oblast}{' '}
+                <strong>Ticket oblasst: </strong>
+                {ticket.oblasti}{' '}
               </div>
             </Grid>
-            <Grid xs={12} sm={4} item>
+            <Grid xs={12} md={4} item>
               <div>
-                <strong>Ime i prezime: </strong> Petar P.
+                <strong>Ime i prezime: </strong> {ticket.ime}
               </div>
               <div>
-                <strong>VIN: </strong> JKFHS9088FDJ
+                <strong>VIN: </strong> {ticket.vin}
               </div>
               <div>
-                <strong>Email: </strong>test@gmail.com
+                <strong>Email: </strong>
+                {ticket.email}
               </div>
               <div>
-                <strong>Tel: </strong> 065598111
+                <strong>Tel: </strong> {ticket.broj}
               </div>
             </Grid>
-            <Grid xs={12} sm={4} item>
+            <Grid xs={12} md={4} item>
               <div>
                 <strong>Za: </strong>
-                {ticket
-                  ? ticket.za.map((t, i) => <span key={i}> {`${t};`} </span>)
-                  : null}
+                {ticket.cc}
               </div>
               <div>
                 <strong>CC: </strong>
-                {ticket
-                  ? ticket.cc.map((t, i) => <span key={i}> {`${t};`} </span>)
-                  : null}
+                {ticket.cc}
+              </div>
+            </Grid>
+          </Grid>
+          <Grid
+            direction="row"
+            justify="flex-start"
+            alignItems="center"
+            container
+          >
+            <Grid xs={12} md={4} item>
+              <div
+                style={{
+                  fontSize: '1.1rem',
+                  color: 'red',
+                  width: '100%',
+                  paddingTop: '10px',
+                }}
+              >
+                <strong>Napomena: </strong> {ticket.napomena}
               </div>
             </Grid>
           </Grid>
@@ -102,17 +130,19 @@ const Ticket = ({ match }) => {
       <Grid
         container
         className="msg-history-container-box"
-        style={{ maxHeight: '100vh', overflowY: 'auto', padding: '1rem' }}
+        style={{ padding: '1rem' }}
         direction="column"
         justify="flex-start"
       >
         <Grid xs={12} item>
-          {ticket.history ? (
-            <MessageHistory msgHistory={ticket.history} />
+          {isLoading && <CircularProgress />}
+          {error && <Alert severity="error">{error}</Alert>}
+          {ticket.conversation ? (
+            <MessageHistory msgHistory={ticket.conversation} />
           ) : null}
         </Grid>
       </Grid>
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <Grid style={{ margin: '2rem 0 1rem 0' }} container>
           <Grid xs={12} item>
             <TextField
@@ -131,16 +161,20 @@ const Ticket = ({ match }) => {
         </Grid>
         <Grid container>
           <Grid xs={12} item>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              style={{ fontSize: '1.2rem', float: 'right' }}
-              endIcon={<SendIcon fontSize="large" />}
-            >
-              Posalji odgovor
-            </Button>
+            {ticketSendIsLoading ? (
+              <CircularProgress />
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                style={{ fontSize: '1.2rem', float: 'right' }}
+                endIcon={<SendIcon fontSize="large" />}
+              >
+                Posalji odgovor
+              </Button>
+            )}
           </Grid>
         </Grid>
       </form>

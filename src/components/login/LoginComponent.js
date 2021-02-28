@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -12,11 +12,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login } from './loginAction';
 
 const LoginComponent = ({ formChange, history }) => {
-  const [email, SetEmail] = useState('');
-  const [password, SetPassword] = useState('');
+  const [email, SetEmail] = useState('atlagicognjen@gmail.com');
+  const [password, SetPassword] = useState('12345678');
 
   const dispatch = useDispatch();
-  const { isLoading, isAuth, error } = useSelector((state) => state.login);
+  const { isLoading, error } = useSelector((state) => state.login);
+
+  useEffect(() => {
+    sessionStorage.getItem('token') && history.push('/dashboard');
+  }, [history]);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -29,14 +33,15 @@ const LoginComponent = ({ formChange, history }) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    try {
+      if (!email || !password) {
+        return alert('Fill up form');
+      }
 
-    if (!email || !password) {
-      return alert('Fill up form');
+      dispatch(login({ email, password, history }));
+    } catch (error) {
+      console.log(error);
     }
-
-    dispatch(login({ email, password }));
-
-    history.push('/dashboard');
   };
 
   return (

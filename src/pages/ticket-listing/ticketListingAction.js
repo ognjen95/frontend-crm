@@ -9,14 +9,13 @@ import axios from 'axios';
 
 export const fetchAllTickets = () => async (dispatch) => {
   dispatch(fetchTicketLoading());
-
+  const token = sessionStorage.getItem('token');
   try {
     const { data } = await axios.get(
       'http://localhost:5000/v1/ticket/all-tickets',
       {
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF0bGFnaWNvZ25qZW5AZ21haWwuY29tIiwiaWF0IjoxNjE0Mjc2MTI4LCJleHAiOjE2MTY4NjgxMjh9.meSbihaRtfaj1vE19vpm2Da9RlH6MobLaZIm2Cf2Zp0',
+          Authorization: `Bearer ${token}`,
         },
       }
     );

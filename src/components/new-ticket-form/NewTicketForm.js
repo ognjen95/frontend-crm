@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Paper,
   Container,
@@ -10,14 +10,19 @@ import {
   MenuItem,
   TextField,
   Checkbox,
+  CircularProgress,
   FormHelperText,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Alert from '@material-ui/lab/Alert';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { makeStyles } from '@material-ui/core/styles';
 import './new-ticket.style.css';
-
+import { textLength, selectCheck, vinChecker } from '../../utils/Validation';
+import { createNewTicket } from './newTicketAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { newTicketReset } from './new-ticketSlice';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -38,14 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const NewTicketForm = ({
-  onChangeHandler,
-  onSubmitHandler,
-  formData,
-  formInitialState,
-  hasError,
-  vinCheckState,
-}) => {
+const NewTicketForm = ({ formData }) => {
   const classes = useStyles();
 
   const {
@@ -55,6 +53,37 @@ const NewTicketForm = ({
     prioritetiSelect,
   } = formData;
 
+  const formInitialStates = {
+    drzava: '',
+    prodavac: '',
+    oblasti: '',
+    prioritet: '',
+    cc: '',
+    ticket: '',
+    napomena: '',
+    ime: '',
+    broj: '',
+    email: '',
+    vin: '',
+  };
+
+  const [formInitialState, setFormInitialState] = useState(formInitialStates);
+  const [hasError, setHasError] = useState('');
+  const [vinCheckState, setVinCheckState] = useState({});
+
+  const dispatch = useDispatch();
+  const { isLoading: isSending, newTicket, error } = useSelector(
+    (state) => state.newTicket
+  );
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+
+    setFormInitialState({
+      ...formInitialState,
+      [name]: value,
+    });
+  };
   const {
     drzava,
     prodavac,
@@ -68,6 +97,28 @@ const NewTicketForm = ({
     email,
     vin,
   } = formInitialState;
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    const isValidTextLength = textLength(formInitialState.ticket);
+    const isChecked = selectCheck(
+      //ako dodam neki select ovde i u util funkcijama dodati
+      formInitialState.drzava,
+      formInitialState.prodavac,
+      formInitialState.oblasti,
+      formInitialState.prioritet
+    );
+    // proverava da li VIN ima ispravan broj karaktera i da li sadrzi slovo O, funkcija u utils
+    const vinChecked = vinChecker(formInitialState.vin);
+    setVinCheckState(vinChecked);
+    isValidTextLength && isChecked ? setHasError(false) : setHasError(true);
+
+    dispatch(createNewTicket(formInitialState));
+  };
+  useEffect(() => {
+    dispatch(newTicketReset());
+  }, [dispatch]);
   return (
     <Paper className="newTicketFormPaper " elevation={3}>
       <Container>
@@ -80,6 +131,24 @@ const NewTicketForm = ({
         >
           <Grid item>
             <h1 style={{ margin: '3rem 0', opacity: '.4' }}>Novi tiket</h1>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          item
+          direction="column"
+          justify="center"
+          alignItems="flex-end"
+        >
+          <Grid item>
+            <Button
+              style={{ marginRight: '100px', opacity: '.7' }}
+              onClick={() => {
+                setFormInitialState(formInitialStates);
+              }}
+            >
+              <RefreshIcon color="primary" fontSize="large" />
+            </Button>
           </Grid>
         </Grid>
         <form onSubmit={onSubmitHandler} className="center">
@@ -95,7 +164,7 @@ const NewTicketForm = ({
                     Drzava
                   </InputLabel>
                   <Select
-                    error={hasError ? !drzava && true : false}
+                    // error={hasError ? !drzava && true : false}
                     className="formSelects"
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -126,7 +195,7 @@ const NewTicketForm = ({
                     Prodavac
                   </InputLabel>
                   <Select
-                    error={hasError && !prodavac && true}
+                    // error={hasError && !prodavac && true}
                     className="formSelects"
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -189,7 +258,7 @@ const NewTicketForm = ({
                     Oblasti
                   </InputLabel>
                   <Select
-                    error={hasError && !oblasti && true}
+                    // error={hasError && !oblasti && true}
                     className="formSelects"
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -219,7 +288,7 @@ const NewTicketForm = ({
                     Prioritet
                   </InputLabel>
                   <Select
-                    error={hasError && !prioritet && true}
+                    // error={hasError && !prioritet && true}
                     className="formSelects"
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -267,7 +336,7 @@ const NewTicketForm = ({
                     ))}
                   </Select>
                 </FormControl>
-                {/* Za */}
+                {/* Za
                 <Autocomplete
                   className={classes.formControl}
                   multiple
@@ -296,13 +365,13 @@ const NewTicketForm = ({
                       placeholder="Odaberite za koga je tiket"
                     />
                   )}
-                />
+                /> */}
                 {/* CC */}
                 <TextField
                   className={classes.formControl}
                   fullWidth={true}
                   id="outlined-basic"
-                  label="CC"
+                  label="Za"
                   variant="outlined"
                   name="cc"
                   value={cc}
@@ -325,7 +394,7 @@ const NewTicketForm = ({
                   value={ticket}
                   onChange={onChangeHandler}
                   helperText={hasError && !ticket && 'Ovo polje je obavezno!'}
-                  error={!ticket && hasError && true}
+                  // error={!ticket && hasError && true}
                 />
                 {/* Napomena */}
                 <TextField
@@ -413,17 +482,32 @@ const NewTicketForm = ({
               </Grid>
             </Grid>
           </div>
-
-          <Button
-            className="btn"
-            type="submit"
-            variant="contained"
-            size="large"
-            color="primary"
-            style={{ fontSize: '1.5rem', float: 'right' }}
-          >
-            Posalji tiket
-          </Button>
+          {newTicket && newTicket.userId ? (
+            <Alert severity="success" style={{ margin: '1rem 0' }}>
+              <h2>New ticket created successfuly!</h2>
+            </Alert>
+          ) : null}
+          {error && (
+            <Alert style={{ margin: '1rem 0' }} severity="error">
+              <h2>{error} </h2>
+            </Alert>
+          )}
+          {isSending ? (
+            <CircularProgress
+              style={{ fontSize: '1.5rem', margin: '2rem 0' }}
+            />
+          ) : (
+            <Button
+              className="btn"
+              type="submit"
+              variant="contained"
+              size="large"
+              color="primary"
+              style={{ fontSize: '1.5rem' }}
+            >
+              Posalji tiket
+            </Button>
+          )}
         </form>
       </Container>
     </Paper>

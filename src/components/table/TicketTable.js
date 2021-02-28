@@ -33,7 +33,7 @@ export default function BasicTable() {
     (state) => state.ticketsListing
   );
 
-  useEffect(() => {}, [tickets]);
+  useEffect(() => {}, [tickets, searchTicketList]);
 
   if (isLoading) return <h3>Loading</h3>;
   if (error) return <h3>{error}</h3>;

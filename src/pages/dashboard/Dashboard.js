@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid, Button } from '@material-ui/core';
 import TicketTable from '../../components/table/TicketTable';
 import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
-import ticketsdata from '../../data/ticketsdata.json';
+import { CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchAllTickets } from '../ticket-listing/ticketListingAction';
+import { useSelector } from 'react-redux';
 
 const Dashboard = ({ currentPage }) => {
-  const tickets = ticketsdata;
+  const dispatch = useDispatch();
+
+  const { tickets, isLoading, error } = useSelector(
+    (state) => state.ticketsListing
+  );
+  const pendingTickets = tickets.filter((f) => f.status === 'Otvoren');
+  useEffect(() => {
+    dispatch(fetchAllTickets());
+  }, [dispatch]);
+
   return (
     <Container>
       <Breadcrumb currentPage="Dashboard" />
@@ -30,8 +43,8 @@ const Dashboard = ({ currentPage }) => {
 
         <Grid item container alignItems="center" justify="center">
           <Grid item>
-            <div>Total tickets: 50</div>
-            <div>Pending tickets: 50</div>
+            <div>Total tickets: {tickets.length}</div>
+            <div>Pending tickets: {pendingTickets.length}</div>
           </Grid>
         </Grid>
 
@@ -46,6 +59,8 @@ const Dashboard = ({ currentPage }) => {
             style={{ display: 'table', tableLayout: 'fixed', width: '100%' }}
             item
           >
+            {isLoading && <CircularProgress />}
+            {error && <Alert severity="error">{error}</Alert>}
             <TicketTable />
           </Grid>
         </Grid>
