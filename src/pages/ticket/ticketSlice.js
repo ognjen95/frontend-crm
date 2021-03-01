@@ -9,6 +9,7 @@ const initialState = {
   ticketSent: false,
   ticketCloseLoading: false,
   ticketCloseSuccess: false,
+  ticketClosedMsg: {},
 };
 
 const ticketSlice = createSlice({
@@ -52,11 +53,17 @@ const ticketSlice = createSlice({
     ticketCloseSuccess: (state, action) => {
       state.ticketCloseSuccess = true;
       state.ticketCloseLoading = false;
+      state.ticketClosedMsg = action.payload;
     },
     ticketCloseError: (state, action) => {
       state.ticketCloseSuccess = false;
       state.ticketCloseLoading = false;
       state.error = action.payload;
+    },
+    ticketCloseReset: (state, action) => {
+      state.ticketCloseSuccess = false;
+      state.ticketCloseLoading = false;
+      state.ticketClosedMsg = {};
     },
   },
 });
@@ -75,6 +82,7 @@ export const {
   ticketCloseLoading,
   ticketCloseSuccess,
   ticketCloseError,
+  ticketCloseReset,
 } = actions;
 
 export default reducer;

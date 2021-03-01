@@ -40,7 +40,7 @@ export default function TicketList() {
               size="large"
               color="primary"
             >
-              + Add new ticket
+              + Novi tiket
             </Button>
           </Link>
         </Grid>

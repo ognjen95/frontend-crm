@@ -7,7 +7,7 @@ import { getTicket, sendTicket, closeTicket } from './ticketAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import { ticketSendingReset } from './ticketSlice';
+import { ticketSendingReset, ticketCloseReset } from './ticketSlice';
 
 const Ticket = ({ match }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,8 @@ const Ticket = ({ match }) => {
     error,
     ticketSendIsLoading,
     ticketSent,
+    ticketClosedMsg,
+    ticketCloseLoading,
   } = useSelector((state) => state.ticket);
 
   const [reply, setReply] = useState('');
@@ -32,6 +34,7 @@ const Ticket = ({ match }) => {
   useEffect(() => {
     dispatch(getTicket(match.params.id));
     dispatch(ticketSendingReset());
+    dispatch(ticketCloseReset());
     setReply('');
   }, [dispatch, ticketSent]);
   return (
@@ -41,8 +44,14 @@ const Ticket = ({ match }) => {
           <Breadcrumb currentPage="Ticket" />
         </Grid>
       </Grid>
-      <Grid justify="flex-end" container>
+      <Grid justify="flex-end" direction="row" container>
         <Grid item>
+          {ticketCloseLoading && <CircularProgress />}
+          {ticketClosedMsg.status === 'success' ? (
+            <Alert severity="success">{ticketClosedMsg.msg}</Alert>
+          ) : ticketClosedMsg.status === 'error' ? (
+            <Alert severity="error">{ticketClosedMsg.msg}</Alert>
+          ) : null}
           <Button
             onClick={() => {
               dispatch(closeTicket({ id: match.params.id }));
@@ -161,20 +170,20 @@ const Ticket = ({ match }) => {
         </Grid>
         <Grid container>
           <Grid xs={12} item>
-            {ticketSendIsLoading ? (
-              <CircularProgress />
-            ) : (
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="large"
-                style={{ fontSize: '1.2rem', float: 'right' }}
-                endIcon={<SendIcon fontSize="large" />}
-              >
-                Posalji odgovor
-              </Button>
-            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              style={{ fontSize: '1.2rem', float: 'right' }}
+              endIcon={<SendIcon fontSize="large" />}
+            >
+              {ticketSendIsLoading ? (
+                <CircularProgress />
+              ) : (
+                <span>Posalji odgovor</span>
+              )}
+            </Button>
           </Grid>
         </Grid>
       </form>

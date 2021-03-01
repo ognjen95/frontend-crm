@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { Container, Grid, Button, Paper } from '@material-ui/core';
+import React from 'react';
+import { Container, Paper } from '@material-ui/core';
 import './msg-history.style.css';
-import { useDispatch, useSelector } from 'react-redux';
+
 const MessageHistory = ({ msgHistory }) => {
   return msgHistory.map((msg, index) =>
     !msg.isOperater ? (

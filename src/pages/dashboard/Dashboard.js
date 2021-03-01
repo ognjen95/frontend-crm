@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Container, Grid, Button } from '@material-ui/core';
+import './dashboard.style.css';
+import { Container, Grid, Button, Paper } from '@material-ui/core';
 import TicketTable from '../../components/table/TicketTable';
 import Breadcrumb from '../../components/breadcrumbs/BreadCrumbs';
 import { CircularProgress } from '@material-ui/core';
@@ -9,20 +10,29 @@ import { useDispatch } from 'react-redux';
 import { fetchAllTickets } from '../ticket-listing/ticketListingAction';
 import { useSelector } from 'react-redux';
 
-const Dashboard = ({ currentPage }) => {
+const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { tickets, isLoading, error } = useSelector(
     (state) => state.ticketsListing
   );
   const pendingTickets = tickets.filter((f) => f.status === 'Otvoren');
+
+  let ticketi = [];
+  const brojTicketa = () => {
+    for (let i = 0; i <= tickets.length; i++) {
+      ticketi.push(i);
+    }
+    return ticketi;
+  };
+
   useEffect(() => {
+    console.log(ticketi);
     dispatch(fetchAllTickets());
   }, [dispatch]);
 
   return (
     <Container>
-      <Breadcrumb currentPage="Dashboard" />
       <Grid container>
         <Grid container alignItems="center" justify="center">
           <Grid item>
@@ -35,22 +45,33 @@ const Dashboard = ({ currentPage }) => {
                 color="primary"
                 style={{ fontSize: '1.2rem' }}
               >
-                + Add new ticket
+                + Novi tiket
               </Button>
             </Link>
           </Grid>
         </Grid>
 
         <Grid item container alignItems="center" justify="center">
-          <Grid item>
-            <div>Total tickets: {tickets.length}</div>
-            <div>Pending tickets: {pendingTickets.length}</div>
+          <Grid className="ticketStatsContainer" item>
+            <Paper elevation={6} className="ticketStats">
+              <h3>
+                Ukupno tiketa:
+                <span>{tickets.length}</span>
+                <span>{brojTicketa}</span>
+              </h3>
+            </Paper>
+            <Paper elevation={6} className="ticketStats">
+              <h3>
+                Otvoreni tiketi:
+                <span>{pendingTickets.length}</span>
+              </h3>
+            </Paper>
           </Grid>
         </Grid>
 
         <Grid item container>
           <Grid item>
-            <h3>Recently added tickets</h3>
+            <h3>Nedavno otvoreni tiketi</h3>
           </Grid>
         </Grid>
 

@@ -65,7 +65,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Header() {
   const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
-
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const [state, setState] = useState({
     mobileView: false,
     drawerOpen: false,
@@ -106,7 +106,7 @@ export default function Header() {
               className: menuButton,
             }}
           >
-            Logout
+            Logout ( {user.name} )
           </Button>
         </div>
       </Toolbar>

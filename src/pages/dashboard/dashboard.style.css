@@ -1,0 +1,25 @@
+.ticketStatsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.ticketStats {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 300px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.ticketStats h3 span {
+  padding-top: 1rem;
+  font-size: 3rem;
+  display: block;
+}

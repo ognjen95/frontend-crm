@@ -64,6 +64,7 @@ export const closeTicket = ({ id }) => async (dispatch) => {
 
     const { data } = await axios.patch(
       `http://localhost:5000/v1/ticket/close-ticket/${id}`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +72,7 @@ export const closeTicket = ({ id }) => async (dispatch) => {
       }
     );
 
-    dispatch(ticketCloseSuccess());
+    dispatch(ticketCloseSuccess(data));
   } catch (error) {
     console.log(error.message);
     dispatch(ticketCloseError(error.message));
